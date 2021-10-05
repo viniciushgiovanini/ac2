@@ -1,12 +1,12 @@
-# Repositório da Matéria de AC2
+# Repositório da Matéria de AC2 (Atualizado dia 05/10/2021)
 
 --> Esse repositório contém as listas teóricas e os quatro trabalhos práticos passado até o dia **05/10**.
 
 ## Andamento Trabalho Prático
 
-TP01 = CONCLUÍDO
-TP02 = NÃO FOI FEITO
-TP03 = CONCLUÍDO
+TP01 = CONCLUÍDO  
+TP02 = NÃO FOI FEITO  
+TP03 = CONCLUÍDO  
 TP04 = CONCLUÍDO
 
 ## Andamento das Listas Teóricas
