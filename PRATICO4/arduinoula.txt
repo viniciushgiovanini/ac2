@@ -1,0 +1,351 @@
+//Aluno: Vinícius Henrique Giovanini
+//Turma: AC2
+//Professor: Romanelli
+
+int ledVERMEI, ledAMRELU, ledAZUR, ledVERDI;
+int led[4] = {13,12,11,10};
+String entrada;
+String memoria[100]={};
+int posiMEMORIA = 3;
+int v1,v2,v3;
+
+
+
+void setup()
+{
+  for(int i = 0; i < 3; i++){//esse for seta o output para os pinos do led
+    pinMode(led[i], OUTPUT);
+  }
+  Serial.begin(9600);
+  
+  for(int j = 0; j < 99;j++){//inicia a memoria toda com 0
+   
+    memoria[j] = "0";
+    
+  }
+  
+}
+
+void salvarmemoriacomeco(int resultado,int v2,int v3, String memoria[100]){//essa funcao é responsavavel
+  //Por pegar o resultado, o primeiro e a segunda entrada e inserir nas 3 primeiras posicoes da memoria
+		
+ 	memoria[0] = resultado;
+  	memoria[1] = v2;
+  	memoria[2] = v3;
+  
+  
+}
+
+ void salvarMEMORIAFINAL(String entrada, String memoria[100]){//essa funcao tem como objetivo salvar
+   //toda a expressão contendo X,Y,OPERACAO na posicao seguinte das 3 primeiras da memoria
+  	
+    
+    
+    
+    for(int i = 3; i < 100; i++)
+    {	
+    	
+      if(memoria[i] == "0"){
+      	
+        memoria[i] = entrada;
+        i = 100;
+        
+      }
+      
+    }
+    
+      
+  }
+
+
+void imprimirmemoriacomeco(String memoria[100]){//essa funcao imprime as 3 primeiras posicoes do vetor
+  Serial.println("Posicao 0 da Memoria: " + memoria[0]);
+  Serial.println("Posicao 1 da Memoria: " + memoria[1]);
+  Serial.println("Posicao 2 da Memoria: " + memoria[2]);
+}
+
+void imprimirmemoriafinal(String memoria[100]){//essa funcao é responsavel de imprimir o resto do vetor
+  
+  int qtdELEMENTOS = 0;
+  
+  for(int j = 3; j < 100; j++){
+    if(memoria[j] != "0"){
+      qtdELEMENTOS++;
+    }
+  }
+ 
+  qtdELEMENTOS -=1;
+ 
+  for(int i = 3; i < qtdELEMENTOS + 3; i++){
+  	
+    Serial.print(memoria[i]);
+    Serial.print(" <--> ");
+    
+  }
+  
+  Serial.println(" // ");
+  
+}
+
+int transformandodeHEXparaINT(String entrada, int posi){//Essa funcao pega o numero em HEX e converte para INT
+  char letra[100];
+  entrada.toCharArray(letra,100);
+  int valor = conversao(letra[posi]);  
+  
+  
+  return valor;
+  
+}
+
+int conversao(char elem){
+  switch(elem){
+    case('0'):
+        return 0;
+    case('1'):
+        return 1;
+    case('2'):
+        return 2;
+    case('3'):
+        return 3;
+    case('4'):
+        return 4;
+    case('5'):
+        return 5;
+    case('6'):
+        return 6;
+    case('7'):
+        return 7;
+    case('8'):
+        return 8;
+    case('9'):
+        return 9;
+    case('A'):
+        return 10;
+    case('B'):
+        return 11;
+    case('C'):
+        return 12;
+    case('D'):
+        return 13;
+    case('E'):
+        return 14;
+    case('F'):
+        return 15;
+  }
+} 
+
+
+long convertDecimalToBinary(int number){//Essa funcao converte decimal para binatio
+	int reminder;
+      String bin;
+  while(number){
+    reminder = number % 2;
+    number = number / 2;
+    bin = String(reminder) + bin;
+}
+ 
+  return bin.toInt();
+  
+}
+  
+
+int operacao(int v1, int v2, int op){//Esse switch case é responsavel por selecionar a operacao e executar
+  //retornando o resultado de determinada operacao
+ switch(op){
+    case(0):
+   		return convertDecimalToBinary(~v1);     
+    case(1):
+        return convertDecimalToBinary(~(v1 | v2));
+    case(2):
+        return convertDecimalToBinary(~v1) & v2;
+    case(3):
+        return 0;
+    case(4):
+        return convertDecimalToBinary(~(v1 & v2));
+    case(5):
+        return convertDecimalToBinary(~v1);
+    case(6):
+        return v1 ^ v2;
+    case(7):
+        return v1 & convertDecimalToBinary(~v2);
+    case(8):
+        return convertDecimalToBinary(~v1) | v2;
+    case(9):
+        return convertDecimalToBinary(~(v1 ^ v2));
+    case(10):
+        return v2;
+    case(11):
+        return v1 & v2;
+    case(12):
+        return 1;
+    case(13):
+        return v1 | convertDecimalToBinary(~v2);
+    case(14):
+        return v1 | v2;
+    case(15):
+        return v1;
+  }
+  
+  
+  
+  
+	
+}
+
+void LampadaON (int n){//Essa função tem como objetivo ligar os leds quando determinado numero for
+ //1 ou 0, 1 para ligado 0 para desligado
+
+  int a[4]= {0,0,0,0},i;
+  for(i=0;n>0;i++){    
+    a[i]=n%2;    
+    n=n/2;    
+  }
+ 
+  digitalWrite(led[0],a[3]? HIGH : LOW);
+  digitalWrite(led[1],a[2]? HIGH : LOW);
+  digitalWrite(led[2],a[1]? HIGH : LOW);
+  digitalWrite(led[3],a[0]? HIGH : LOW);
+  delay(1000);
+}
+
+/*
+void LampadaON(int n){
+
+  int salvar = 0;
+  salvar = transformandoBIT(n);
+  char numeros[3];
+  itoa(salvar,numeros, 10);
+  int contadordecasas = 0;
+  
+  Serial.print("LAMPADAAAA: ");
+  Serial.println(n);
+  Serial.println(salvar);
+  Serial.println(numeros[0]);
+  Serial.println(numeros[1]);
+  Serial.println(numeros[2]);
+  Serial.println(numeros[3]);
+  
+  for(int i = 0; i < 4; i++){
+    if(numeros[i] != NULL){
+    contadordecasas++;
+    }
+  }
+  
+  if(contadordecasas == 1){
+   
+    if(numeros[0] == '1'){
+    	digitalWrite(led[0], HIGH);
+      	analogWrite(led[0], 255);
+    }  
+    
+    
+  }
+  
+  if(contadordecasas == 2){
+   
+    if(numeros[0] == '1'){
+    	digitalWrite(led[0], HIGH);
+      	analogWrite(led[0], 255);
+      
+    }
+    
+    if(numeros[1] == '1'){
+    	digitalWrite(led[1], HIGH);
+      	analogWrite(led[1], 255);
+      
+    } 
+    
+    
+  }
+  
+  if(contadordecasas == 3){
+   
+    if(numeros[0] == '1'){
+    	digitalWrite(led[0], HIGH);
+        analogWrite(led[0], 255);
+      
+    }
+    
+    if(numeros[1] == '1'){
+    	digitalWrite(led[1], HIGH);
+        analogWrite(led[1], 255);
+      
+    } 
+    
+    if(numeros[2] == '1'){
+    	digitalWrite(led[2], HIGH);
+      	analogWrite(led[2], 255);
+    } 
+    
+    
+  }
+  
+   if(contadordecasas == 4){
+   
+    if(numeros[0] == '1'){
+    	digitalWrite(led[0], HIGH);
+      	analogWrite(led[0], 255);
+      
+    }
+    
+    if(numeros[1] == '1'){
+    	digitalWrite(led[1], HIGH);
+      	analogWrite(led[1], 255);
+      
+    } 
+    
+    if(numeros[2] == '1'){
+    	digitalWrite(led[2], HIGH);
+      	analogWrite(led[2], 255);
+      
+    } 
+     
+     if(numeros[3] == '1'){
+    	digitalWrite(led[3], HIGH);
+       	analogWrite(led[3], 255);
+      
+    } 
+    
+    
+  }
+  
+  delay(2000);
+  
+}
+*/
+  
+  
+void loop()//aqui é o main
+{
+  LampadaON(0);//desliga os leds
+  Serial.println("Insira os numeros e a operacao a ser feita");
+  while(Serial.available()==0){}
+  entrada = Serial.readString(); //insercao da string com XY e OP
+  Serial.println(entrada);  
+ v1 = transformandodeHEXparaINT(entrada, 0);//pega a string convert para char, pega o char na posicao no caso
+  //0 e convert para int e retorna
+  v2 = transformandodeHEXparaINT(entrada, 1);
+  v3 = transformandodeHEXparaINT(entrada, 2);
+  
+  int resultado = operacao(v1,v2,v3);//faz as operacoes no switch case
+  salvarMEMORIAFINAL(entrada, memoria);//salva no final da memoria, a string completa
+  salvarmemoriacomeco(resultado,v2,v3,memoria);//salva no comeco da memoria RESULTADO X Y 
+  
+  //Os metodos abaixo faz a impressão e a lampada manda o resultado que é convertido para BIN e liga os leds
+  Serial.print("RESULTADO --> ");
+  Serial.println(resultado);
+  LampadaON(resultado);     
+  //Serial.print(" \\ ");
+  imprimirmemoriacomeco(memoria);
+  //Serial.print(" \\ ");  
+  imprimirmemoriafinal(memoria); 
+  
+  
+ 
+  
+  
+  
+	
+ 
+
+}

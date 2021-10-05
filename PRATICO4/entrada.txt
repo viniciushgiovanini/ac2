@@ -1,0 +1,12 @@
+inicio
+X=5;
+Y=2;
+An;
+Bn;
+nAeB;
+X=D;
+AoB;
+X=1;
+Y=2;
+An;
+fim.
