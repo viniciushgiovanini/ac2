@@ -1,4 +1,4 @@
-# Repsitório da Matéria de AC2
+# Repositório da Matéria de AC2
 
 --> Esse repositório contém as listas teóricas e os quatro trabalhos práticos passado até o dia **05/10**.
 
